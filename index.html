@@ -49,17 +49,18 @@
 
   <section class="card">
     <div class="row spread">
-      <h2 id="chart-title">Average height per country</h2>
+      <h2 id="chart-title">Everyone, tallest first</h2>
       <div class="seg" role="group" aria-label="Chart mode">
-        <button type="button" id="m-country" aria-pressed="true">Per country</button>
-        <button type="button" id="m-person" aria-pressed="false">Per person</button>
+        <button type="button" id="m-country" aria-pressed="false">Per country</button>
+        <button type="button" id="m-person" aria-pressed="true">Per person</button>
       </div>
     </div>
     <div id="chart-scroll"><svg id="chart" role="img" aria-label="Chart of heights"></svg></div>
+    <label class="check"><input type="checkbox" id="zero"><span>Start the axis at zero</span></label>
     <p class="note" id="chart-note"></p>
   </section>
 
-  <p class="note">The axis deliberately doesn't start at zero, so small differences look huge. That is the joke. Questions or removal: <a id="x-link" href="#">X</a>.</p>
+  <p class="note">By default the axis doesn't start at zero, so small differences look huge. Tick “Start the axis at zero” for a true-scale chart. Questions or removal: <a id="x-link" href="#">X</a>.</p>
 </div>
 <script src="config.js"></script>
 <script src="results.js"></script>

@@ -11,7 +11,7 @@ try { store = JSON.parse(localStorage.getItem("height-v1") || "{}"); } catch (e)
 const save = () => { try { localStorage.setItem("height-v1", JSON.stringify(store)); } catch (e) {} };
 if (!store.unit) store.unit = "cm";
 if (!store.key) { store.key = Array.from(crypto.getRandomValues(new Uint8Array(8)), b => b.toString(16).padStart(2, "0")).join(""); save(); }
-let mode = "country", extraCodes = [], fileCodes = [], liveCodes = [];
+let mode = "person", extraCodes = [], fileCodes = [], liveCodes = [];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
@@ -124,11 +124,12 @@ function drawChart() {
   const unit = store.unit, dark = document.documentElement.dataset.theme === "dark";
   const toV = cm => unit === "cm" ? cm : cm / 2.54;
   const vals = items.map(i => toV(i.cm)), mn = Math.min(...vals), mx = Math.max(...vals), span = mx - mn;
-  const steps = unit === "cm" ? [1, 2, 5, 10, 20] : [1, 2, 3, 6, 12];
-  const step = steps.find(s => Math.ceil(span / s) + 3 <= 9) || steps[steps.length - 1];
-  const lo = Math.floor(mn / step) * step - step;
-  let hi = Math.ceil(mx / step) * step; if (hi - mx < step * 0.25) hi += step;
-  const gv = lo - 1.6 * step;                         // "ground" sits below the axis: that's the funny scaling
+  const zero = $("zero").checked;                    // true scale: axis starts at 0 and feet are on the 0 line
+  const steps = zero ? (unit === "cm" ? [10, 20, 25, 50] : [6, 12, 24]) : (unit === "cm" ? [1, 2, 5, 10, 20] : [1, 2, 3, 6, 12]);
+  const step = zero ? steps.find(s => Math.ceil(mx / s) <= 10) || steps[steps.length - 1] : steps.find(s => Math.ceil(span / s) + 3 <= 9) || steps[steps.length - 1];
+  const lo = zero ? 0 : Math.floor(mn / step) * step - step;
+  let hi = Math.ceil(mx / step) * step; if (!zero && hi - mx < step * 0.25) hi += step;
+  const gv = zero ? 0 : lo - 1.6 * step;              // otherwise the "ground" sits below the axis: that's the funny scaling
   const slot = mode === "country" ? 120 : 92, left = 70, right = 20;
   const cw = $("chart-scroll").clientWidth || 700;
   const W = Math.max(cw, left + right + items.length * slot), H = 520, top = 24, ground = 430;
@@ -160,6 +161,7 @@ function renderAll() {
 // ---- wiring ----
 $("countries").innerHTML = COUNTRIES.map(c => '<option value="' + c + '">').join("");
 $("x-link").href = "https://x.com/" + (CFG.ownerX || ""); $("x-link").textContent = "@" + (CFG.ownerX || "");
+$("zero").onchange = drawChart;
 $("u-cm").onclick = () => setUnit("cm"); $("u-ft").onclick = () => setUnit("ft");
 $("m-country").onclick = () => { mode = "country"; renderAll(); }; $("m-person").onclick = () => { mode = "person"; renderAll(); };
 ["name", "country", "h-cm", "h-ft", "h-in"].forEach(id => $(id).addEventListener("input", () => {
