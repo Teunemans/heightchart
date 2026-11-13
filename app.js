@@ -135,7 +135,6 @@ function drawChart() {
   const y = v => ground - (v - gv) / (hi - gv) * (ground - top);
   const ink = dark ? [138, 128, 224] : [122, 111, 208], low = dark ? [74, 69, 168] : [43, 40, 112];
   let s = '<defs><symbol id="p" viewBox="0 0 100 300" preserveAspectRatio="xMidYMax meet"><circle cx="50" cy="20" r="17"/><rect x="43" y="32" width="14" height="14"/><path d="M26 46 Q50 38 74 46 L75 138 L25 138 Z"/><path d="M27 48 L14 56 L6 142 L17 144 L27 84 Z"/><path d="M73 48 L86 56 L94 142 L83 144 L73 84 Z"/><path d="M25 132 L49 132 L47 296 L30 296 Z"/><path d="M51 132 L75 132 L70 296 L53 296 Z"/></symbol></defs>';
-  s += '<circle class="blob" cx="' + (W / 2) + '" cy="' + ((top + ground) / 2) + '" r="' + Math.min(250, (W - left) * 0.5) + '"/>';
   for (let v = lo; v <= hi + 1e-9; v += step) {
     const yy = y(v), lab = unit === "cm" ? Math.round(v) + " cm" : fmtIn(v);
     s += '<line class="g" x1="' + left + '" x2="' + (W - right) + '" y1="' + yy + '" y2="' + yy + '"/><line class="tick" x1="' + (left - 6) + '" x2="' + left + '" y1="' + yy + '" y2="' + yy + '"/><text class="ax" x="' + (left - 10) + '" y="' + (yy + 4) + '" text-anchor="end">' + lab + '</text>';
