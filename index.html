@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Height chart</title>
+<meta name="description" content="Add your height and see everyone on one gloriously exaggerated chart.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Height chart</h1>
+      <p class="muted">Add your height and see everyone on one gloriously exaggerated chart.</p>
+    </div>
+    <div class="row">
+      <div class="seg" role="group" aria-label="Unit">
+        <button type="button" id="u-cm" aria-pressed="true">cm</button>
+        <button type="button" id="u-ft" aria-pressed="false">ft + in</button>
+      </div>
+      <button class="small" id="theme" type="button" aria-label="Switch to dark mode">Dark</button>
+    </div>
+  </header>
+
+  <section class="card" id="me">
+    <h2>Add yourself</h2>
+    <div class="grid">
+      <div class="field"><label for="name">Name (optional)</label>
+        <input type="text" id="name" maxlength="24" autocomplete="nickname" placeholder="e.g. Sanne"></div>
+      <div class="field"><label for="country">Country</label>
+        <input type="text" id="country" maxlength="40" list="countries" autocomplete="off" placeholder="e.g. Netherlands"></div>
+      <div class="field"><label id="h-label" for="h-cm">Height</label>
+        <div class="pair" id="p-cm"><input type="number" id="h-cm" step="0.1" min="100" max="230" inputmode="decimal" placeholder="183"><span>cm</span></div>
+        <div class="pair" id="p-ft" hidden>
+          <input type="number" id="h-ft" step="1" min="3" max="7" inputmode="numeric" placeholder="6" aria-label="Feet"><span>ft</span>
+          <input type="number" id="h-in" step="0.1" min="0" max="11.9" inputmode="decimal" placeholder="0" aria-label="Inches"><span>in</span>
+        </div></div>
+    </div>
+    <datalist id="countries"></datalist>
+    <label class="check"><input type="checkbox" id="consent"><span>I'm 16 or older, and I agree that my name, country and height are stored and shown publicly on this chart. I can ask to have them removed.</span></label>
+    <div class="row">
+      <button class="primary" id="send-btn" type="button" disabled>Add me</button>
+      <button class="link" id="remove-btn" type="button" hidden>Remove me</button>
+      <span id="send-status" class="note" aria-live="polite"></span>
+    </div>
+    <p class="note" id="send-off" hidden></p>
+  </section>
+
+  <section class="card">
+    <div class="row spread">
+      <h2 id="chart-title">Average height per country</h2>
+      <div class="seg" role="group" aria-label="Chart mode">
+        <button type="button" id="m-country" aria-pressed="true">Per country</button>
+        <button type="button" id="m-person" aria-pressed="false">Per person</button>
+      </div>
+    </div>
+    <div id="chart-scroll"><svg id="chart" role="img" aria-label="Chart of heights"></svg></div>
+    <p class="note" id="chart-note"></p>
+  </section>
+
+  <p class="note">The axis deliberately doesn't start at zero, so small differences look huge. That is the joke. Questions or removal: <a id="x-link" href="#">X</a>.</p>
+</div>
+<script src="config.js"></script>
+<script src="results.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
